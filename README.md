@@ -1,4 +1,5 @@
 # Memoryflip
-Source code for the game that can be played here: 
+Source code for the game that can be played here:
+https://rikhartbekkevold.github.io/cardflip-game
 
-Source code might not be updated yet with the newest source code.
+Games source code might not be updated yet with the newest source code from this repo.
