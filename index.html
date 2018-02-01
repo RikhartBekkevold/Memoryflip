@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+		* {
+			padding: 0;
+			margin: 0;
+		}
+        body {
+            margin: 0px;
+            height: 100%;
+            padding: 0px;
+            background: #221F1F;
+        }
+        html {
+            margin: 0px;
+            padding: 0px;
+        }
+        canvas {
+            margin: 0px;
+            padding: 0px;
+        }
+    </style>
+</head>
+<body>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi-filters/1.0.8/filters.js"></script> -->
+	<script>
+		var game = new PIXI.Application(document.body.clientWidth, 970, {backgroundColor : 0x221F1F});
+		document.body.appendChild(game.view);
+	</script>
+	<script src="js/consts.js"></script>
+    <script src="lib/utility.js"></script>
+    <script src="lib/animations.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/sound.js"></script>
+    <script src="js/card.js"></script>
+    <script src="js/startscreen.js"></script>
+    <script src="js/settingsscreen.js"></script>
+    <script src="js/endscreen.js"></script>
+	<script>
+		let GAME;
+		let end;
+        const STARTSCREEN = new StartScreen(game.stage);
+    </script>
+</body>
+</html>
