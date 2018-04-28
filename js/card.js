@@ -11,6 +11,10 @@ function Card(v, b, canvas, x, y) {
     this.flipped    =   false;
     this.inactive   =   false;
 
+    // currFlipping
+    // frontShowing
+    // backShowing
+
     this.backView.interactive = true;
     this.backView.buttonMode = true;
     this.backView.anchor.set(0.5);
@@ -91,7 +95,7 @@ Card.prototype.flipBack = function(){
                 }
             }
         }, 10);
-    }, 700)
+    }, 700) //flipDelay
 };
 
 Card.prototype.removeView = function() {

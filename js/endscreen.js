@@ -53,7 +53,7 @@ EndScreen.prototype.restartGame = function(canvas) {
         // move the button in x direction
         self.message.x = Math.pow( i, 2.3 ) + start_X;
         i += 0.1;
-        //
+
         if(self.message.x < -self.message.width) {
             clearInterval(slideLeft);
             canvas.removeChild(self.message);

@@ -3,6 +3,7 @@ function Game(canvas) {
     this.fps            = 60;
     this.cards          = [];
     this.prevFlipped    = null;
+    this.allowFlip      = true;
     this.nrOfCards      = 16;
     this.nrOfRows       = 2;
     this.paused         = false;
@@ -40,32 +41,52 @@ Game.prototype.init = function(delay) {
 
 
 
+
 Game.prototype.gameLogic = function(card) {
     var self = this;
-    self.cards.forEach(function(prevClickedCard) {
-        // if successful match
-        if(prevClickedCard.value === card.value && prevClickedCard.flipped === true && prevClickedCard !== card) {
-            self.cards.splice(self.cards.indexOf(card), 1);
-            self.cards.splice(self.cards.indexOf(prevClickedCard), 1);
-            self.successSound.play();
-            card.removeCard();
-            prevClickedCard.removeCard();
-        }
-        // if not successful match
-        else if(prevClickedCard.flipped === true && prevClickedCard.value != card.value) {
-            card.flipBack();
-            prevClickedCard.flipBack();
-        }
-    });
 
-    self.score.text = self.nrOfMovesMade++;
-    card.flipOver();
-    self.flipSound.play();
-    if(self.cards.length === 0) {
-        end = new EndScreen(game.stage, self.nrOfMovesMade);
-        self.canvas.removeChild(self.score);
-        self.canvas.removeChild(self.cogwheel);
+
+    if(this.allowFlip === true) {
+
+        self.cards.forEach(function(prevClickedCard) {
+            // if successful match
+            if(prevClickedCard.value === card.value && prevClickedCard.flipped === true && prevClickedCard !== card) {
+
+                self.allowFlip = false;
+                self.cards.splice(self.cards.indexOf(card), 1);
+                self.cards.splice(self.cards.indexOf(prevClickedCard), 1);
+                self.successSound.play();
+                card.removeCard();
+                prevClickedCard.removeCard();
+                setTimeout(function () {
+                    self.allowFlip = true;
+                }, 700);
+            }
+            // if not successful match
+            else if(prevClickedCard.flipped === true && prevClickedCard.value != card.value) {
+                self.allowFlip = false;
+                card.flipBack();
+                prevClickedCard.flipBack();
+                setTimeout(function () {
+                    self.allowFlip = true;
+                }, 700);
+            }
+        });
+
+        //do on every click
+        self.score.text = self.nrOfMovesMade++;
+        card.flipOver();
+        self.flipSound.play();
+
+        //if the game is over
+        if(self.cards.length === 0) {
+            end = new EndScreen(game.stage, self.nrOfMovesMade);
+            self.canvas.removeChild(self.score);
+            self.canvas.removeChild(self.cogwheel);
+        }
+
     }
+
 };
 
 

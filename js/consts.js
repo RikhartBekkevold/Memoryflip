@@ -10,15 +10,15 @@ const STYLE = new PIXI.TextStyle({
 
 const PATHS = {
     // cards
-    cardBGs: [   "img/card_back0.png",
-                 "img/card_back1.png",
-                 "img/card_back2.png",
-                 "img/card_back3.png",
-                 "img/card_back4.png",
-                 "img/card_back5.png",
-                 "img/card_back6.png",
-                 "img/card_back7.png"],
-    cardFG:      "img/card_front.png",
+    cardBGs: [   "img/cards/card_back0.png",
+                 "img/cards/card_back1.png",
+                 "img/cards/card_back2.png",
+                 "img/cards/card_back3.png",
+                 "img/cards/card_back4.png",
+                 "img/cards/card_back5.png",
+                 "img/cards/card_back6.png",
+                 "img/cards/card_back7.png"],
+    cardFG:      "img/cards/card_front.png",
 
     // buttons
     sceneBG:     "img/background.png",
