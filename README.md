@@ -1,5 +1,7 @@
 # Memoryflip
 
+[Memoryflip](http://www.pixijs.com/) is a card flipping game made in javascript and with the
+help of pixi.js.
 
 ## Play the game here: ##
 https://rikhartbekkevold.github.io/cardflip-game
