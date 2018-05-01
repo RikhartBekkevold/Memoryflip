@@ -1,50 +1,105 @@
 function Game(canvas) {
-    this.canvas         = canvas;
-    this.fps            = 60;
-    this.cards          = [];
-    this.prevFlipped    = null;
-    this.allowFlip      = true;
-    this.nrOfCards      = 16;
-    this.nrOfRows       = 2;
-    this.paused         = false;
-    this.nrOfMovesMade  = 0;
-    this.cardContainer  = new PIXI.Container();
-    this.score          = new PIXI.Text(this.nrOfMovesMade, STYLE);
-    this.cogwheel       = PIXI.Sprite.fromImage(PATHS.cogwheel);
-    this.flipSound      = new Audio(PATHS.flipSound);
-    this.successSound   = new Audio(PATHS.successSound);
+    this.canvas                 = canvas;
+    this.fps                    = 60;
+    this.cards                  = [];
+    this.prevFlipped            = null;
+    this.revealed               = false;
+    this.allowFlip              = true;
+    this.nrOfCards              = Settings.num_cards;
+    this.nrOfRows               = Settings.num_rows;
+    this.paused                 = false;
+    this.nrOfMovesMade          = 0;
+    this.cardContainer          = new PIXI.Container();
+    this.score                  = new PIXI.Text('SCORE: ' + this.nrOfMovesMade, STYLE);
+    this.flipSound              = new Audio(PATHS.flipSound);
+    this.successSound           = new Audio(PATHS.successSound);
+    this.successSound.volume    = 0.1;
+    this.cardContainer.x        = game.renderer.width/2 - 400;
+    this.score.x                = 30;
+    this.peekBtn                = new PIXI.Text('PEEK', ALT_STYLE);
+    this.backBtn                = new PIXI.Text('BACK', ALT_STYLE);
+    this.resetBtn               = new PIXI.Text('RESET', ALT_STYLE);
+    this.menuButtons            = [this.peekBtn, this.resetBtn, this.backBtn];
 
-    this.successSound.volume = 0.1;
-    this.cardContainer.x = game.renderer.width/2 - 400;
-    this.score.x = 30;
-    this.cogwheel.x = game.renderer.width - 100;
-    this.cogwheel.interactive = true;
-    this.cogwheel.buttonMode = true;
+    //add lines above in foreach and push at end?
+    this.menuButtons.forEach((btn, i) => {
+        btn.y = i === 0 ? 100 : 40 + this.menuButtons[i-1].y;
+        btn.x = 30;
+        btn.interactive = true;
+        btn.buttonMode = true;
+        // btn.on("pointerup", () => btn.text());
+    });
 
-    this.canvas.addChild(this.cardContainer);
-    this.cogwheel.on("pointerup", () => this.reset(this.canvas));
+    this.peekBtn.on("pointerup", () => this.peek());
+    this.resetBtn.on("pointerup", () => this.resetGame());
+    this.backBtn.on("pointerup", () => this.gotoMainMenu());
 };
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 Game.prototype.init = function(delay) {
+    this.canvas.addChild(this.cardContainer);
     this.createCards();
     this.cards = shuffleCards(this.cards);
     this.setCardCoordinates();
     this.drawCards(delay, this.canvas);
-    var self = this;
-    this.cards.forEach(function(card) {
-        card.frontView.on('pointerover', () => self.animateHover(card));
-        card.frontView.on('pointerout', () => self.animateHoverLeave(card));
-        card.frontView.on('pointerup', () => self.gameLogic(card));
+    this.cards.forEach((card) => {
+        card.frontView.on('pointerup', () => this.gameLogic(card));
     });
 };
 
+
+/**
+ * Flips every card with the frontside up
+ */
+Game.prototype.showAll = function() {
+    this.cards.forEach((card) => {
+        card.flipOver();
+        this.revealed = true;
+    });
+};
+
+
+/**
+ *  Flips every card with the backside up
+ */
+Game.prototype.hideAll = function() {
+    this.cards.forEach((card) => {
+        card.flipBack();
+        this.revealed = false;
+    });
+};
+
+
+/**
+ * Shows the backside of all cards for 1 second
+ */
+Game.prototype.peek = function () {
+    this.nrOfMovesMade += 2;
+    this.score.text = 'SCORE: ' + this.nrOfMovesMade;
+    this.showAll();
+
+    setTimeout(() => {
+        this.hideAll();
+    }, 1000);
+};
 
 
 
 Game.prototype.gameLogic = function(card) {
     var self = this;
-
 
     if(this.allowFlip === true) {
 
@@ -60,35 +115,39 @@ Game.prototype.gameLogic = function(card) {
                 prevClickedCard.removeCard();
                 setTimeout(function () {
                     self.allowFlip = true;
-                }, 700);
+                }, 1000);
             }
             // if not successful match
             else if(prevClickedCard.flipped === true && prevClickedCard.value != card.value) {
                 self.allowFlip = false;
+                self.score.text = 'SCORE: ' + self.nrOfMovesMade++;
                 card.flipBack();
                 prevClickedCard.flipBack();
                 setTimeout(function () {
                     self.allowFlip = true;
-                }, 700);
+                }, 500);
             }
         });
 
         //do on every click
-        self.score.text = self.nrOfMovesMade++;
         card.flipOver();
         self.flipSound.play();
 
-        //if the game is over
+        //check if game is over
         if(self.cards.length === 0) {
-            end = new EndScreen(game.stage, self.nrOfMovesMade);
+
+            setTimeout(function () {
+                end = new EndScreen(game.stage, self.nrOfMovesMade);
+            }, 1500);
+
             self.canvas.removeChild(self.score);
-            self.canvas.removeChild(self.cogwheel);
+            // remove all buttons
+            self.menuButtons.forEach(function(btn) {
+                self.canvas.removeChild(btn);
+            });
         }
-
     }
-
 };
-
 
 
 Game.prototype.drawCards = function(delay, canvas) {
@@ -101,45 +160,28 @@ Game.prototype.drawCards = function(delay, canvas) {
             card.draw();
         }, delay);
 
-        setTimeout(function() { // this adds many
-            canvas.addChild(self.cogwheel);
+        setTimeout(function() {
+            //add order == z-index
+            self.menuButtons.forEach(function(btn) {
+                canvas.addChild(btn);
+            });
             canvas.addChild(self.score);
-        }, delay + 500);
+
+        }, delay);
 
         delay += 20;
 
     });
 };
 
-Game.prototype.animateHover = function(card) {
-    card.frontView.tint = 0xB1B1B1;
-    //close eyes
-};
 
-Game.prototype.animateHoverLeave = function(card) {
-    card.frontView.tint = 0xFFFFFF;
-    //open eyes
-};
 
-Game.prototype.revealAllCards = function() {
-    this.cards.forEach(function(card, index) {
-        card.flipped = true;
-        card.draw();
-    });
-};
 
-Game.prototype.disableCard = function (card) {
-    card.inactive = true;
-};
-
-Game.prototype.disableCards = function () {
-    this.cards.forEach(function(card) {
-        card.disableCard();
-    });
-};
-
+/**
+ * pushes 16 cards. uses the same index twice.
+ */
 Game.prototype.createCards = function() {
-    // create 16 cards
+    // create 16 cards. pairs of cards share index
     for(let i = 0; i < 2; i++) { //rows
         for(let j = 0; j < this.nrOfCards/2; j++) { //columns
             this.cards.push(new Card(j, PATHS.cardBGs[j], this.cardContainer)); //(j*CARDS_WIDTH) + (PADDING*j) + 30, (i*CARDS_HEIGHT) + (PADDING*i) + 30)
@@ -147,11 +189,38 @@ Game.prototype.createCards = function() {
     }
 };
 
+
+// PATHS.cardBGs + i + ".png"
+// CARD_PATH + i + ".png"
+
+// 2 rows
+// 2 8/2
+// 2 - 8/2 - two rows, eight cards
+
+
+// 3 rows
+// 3 - 12/3
+// nr of cards must match the space below
+
+// 4 16/4
+//
+// this.nrOfCards = 8;
+// this.nrOfRows = 2;
+//
+// this.nrOfCards = 12;
+// this.nrOfRows = 3;
+//
+// this.nrOfCards = 16;
+// this.nrOfRows = 4;
+// rows
+//cant dobbel click peek becasue revlead = true/false? execture code only if true.
+
+
 Game.prototype.setCardCoordinates = function() {
     // set the cards x,y coordinates to match their new randomized array location
-    var index = 0;
-    for(l = 0; l < 4; l++) {
-        for(k = 0; k < this.nrOfCards/4; k++) {
+    let index = 0;
+    for(l = 0; l < this.nrOfRows; l++) {  //3 rows
+        for(k = 0; k < this.nrOfCards/this.nrOfRows; k++) {   //colomns 12/3 = 4
             this.cards[index].x = (k*CARDS_WIDTH) + (PADDING*k) + 120;
             this.cards[index].y = (l*CARDS_HEIGHT) + (PADDING*l) + 120;
             index++;
@@ -159,23 +228,37 @@ Game.prototype.setCardCoordinates = function() {
     }
 };
 
-Game.prototype.reset = function() {
+
+Game.prototype.removeMenuButtons = function () {
+    for(var i = 0; i < this.menuButtons.length; i++) {
+        this.canvas.removeChild(this.menuButtons[i]);
+    }
+};
+//alt 2:
+// Game.prototype.removeMenuButtons = function () {
+//     this.menuButtons.forEach(function(btn) {
+//         this.canvas.removeChild(btn);
+//     });
+// };
+
+Game.prototype.removeScene = function () {
     this.cards.forEach(function(card) {
         card.removeView();
     });
-    this.canvas.removeChild(this.score);
-    this.canvas.removeChild(this.cogwheel);
+    this.removeMenuButtons();
     this.cards = [];
+};
+
+
+Game.prototype.resetGame = function() {
+    this.removeScene();
+    this.canvas.removeChild(this.score);
     GAME = new Game(this.canvas);
     GAME.init(0);
 };
 
-// this.cogwheel.on('mousemove', function (event) {
-//     const x = event.data.global.x;
-//     const y = event.data.global.y;
-//
-//     self.cards.forEach(function(card) {
-//         var rad = Math.atan2(x - card.eyes.x, y - card.eyes.y);   // atan only useful for rotation - dont need for moving to an x,y point, just inc both x and y at same time
-//         card.eyes.rotation = (rad * (180 / Math.PI) * -1) + 180;
-//     });
-// });
+
+Game.prototype.gotoMainMenu = function () {
+    this.removeScene();
+    const STARTSCREEN = new StartScreen(game.stage);
+};

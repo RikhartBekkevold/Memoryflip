@@ -56,9 +56,9 @@ Card.prototype.draw = function() {
     }
 };
 
-
 Card.prototype.flipOver = function() {
     var card = this;
+
     var flip = setInterval(function() {
         card.frontView.scale.x -= 0.1;
 
@@ -79,6 +79,7 @@ Card.prototype.flipOver = function() {
 
 Card.prototype.flipBack = function(){
     var card = this;
+
     setTimeout(function() {
         let flip = setInterval(function() {
             card.backView.scale.x -= 0.1;
@@ -95,7 +96,7 @@ Card.prototype.flipBack = function(){
                 }
             }
         }, 10);
-    }, 700) //flipDelay
+    }, 700);
 };
 
 Card.prototype.removeView = function() {
@@ -105,6 +106,7 @@ Card.prototype.removeView = function() {
 
 Card.prototype.removeCard = function() {
     var card = this;
+
     setTimeout(function() {
         let fadeOut = setInterval(function() {
             card.backView.alpha -= 0.3;
@@ -113,5 +115,5 @@ Card.prototype.removeCard = function() {
                 clearInterval(fadeOut);
             }
         }, 100);
-    }, 1000)
+    }, 1000);
 };

@@ -33,32 +33,41 @@ function EndScreen(canvas, score) {
 };
 
 
+
+
+
 EndScreen.prototype.restartGame = function(canvas) {
-    var self    = this;
-    var i       = 0.0;              //the value that increases to the power of 2. so must be speed
-    var start_X = JSON.parse(JSON.stringify(this.message.x));
+    // var self    = this;
+    // var i       = 0.0;              //the value that increases to the power of 2. so must be speed
+    // var start_X = JSON.parse(JSON.stringify(this.message.x));
+    //
+    // let slideRight = setInterval(function() {
+    //     //
+    //     self.retryBtn.x = Math.pow(i, 2.3) + start_X;  //replace with i*i = 500?
+    //     i += 0.1;
+    //     //
+    //     if(self.retryBtn.x > game.renderer.width) {
+    //         clearInterval(slideRight);
+    //         canvas.removeChild(self.retryBtn);
+    //     }
+    // }, 1);
+    //
+    // let slideLeft = setInterval(function() {
+    //     // move the button in x direction
+    //     self.message.x = Math.pow( i, 2.3 ) + start_X;
+    //     i += 0.1;
+    //
+    //     if(self.message.x < -self.message.width) {
+    //         clearInterval(slideLeft);
+    //         canvas.removeChild(self.message);
+    //     }
+    // }, 1);
 
-    let slideRight = setInterval(function() {
-        //
-        self.retryBtn.x = Math.pow( i, 2.3 ) + start_X;  //replace with i*i = 500?
-        i += 0.1;
-        //
-        if(self.retryBtn.x > game.renderer.width) {
-            clearInterval(slideRight);
-            canvas.removeChild(self.retryBtn);
-        }
-    }, 1);
+    slideOutandRemove(this.retryBtn);
+    slideOutandRemove(this.message);
+    slideOutandRemove(this.endScore);
 
-    let slideLeft = setInterval(function() {
-        // move the button in x direction
-        self.message.x = Math.pow( i, 2.3 ) + start_X;
-        i += 0.1;
 
-        if(self.message.x < -self.message.width) {
-            clearInterval(slideLeft);
-            canvas.removeChild(self.message);
-        }
-    }, 1);
 
     canvas.removeChild(self.endScore);
     delete self.endScore;
