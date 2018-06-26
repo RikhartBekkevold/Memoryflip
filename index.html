@@ -29,22 +29,28 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.5.1/pixi.min.js"></script>
 	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi-filters/1.0.8/filters.js"></script> -->
 	<script>
-		var game = new PIXI.Application(document.body.clientWidth, 970, {backgroundColor : 0x221F1F});
+		var game = new PIXI.Application(
+			document.body.clientWidth,
+			970, {backgroundColor : 0x221F1F}
+		);
 		document.body.appendChild(game.view);
 	</script>
-	<script src="js/consts.js"></script>
+	<script src="js/global_consts.js"></script>
+	<script src="js/localization.js"></script>
+	<script src="js/sceneManager.js"></script>
 	<script src="js/userSettings.js"></script>
 	<script src="lib/utility.js"></script>
 	<script src="lib/animations.js"></script>
 	<script src="js/game.js"></script>
 	<script src="js/card.js"></script>
+	<script src="js/slider.js"></script>
+	<script src="js/checkmark.js"></script>
 	<script src="js/startscreen.js"></script>
 	<script src="js/endscreen.js"></script>
 	<script src="js/settingsscreen.js"></script>
 	<script>
-		let GAME;
-		let end;
-		const STARTSCREEN = new StartScreen(game.stage);
+		const SM = new SceneManager();
+		// SM.nextScene('start');
 	</script>
 </body>
 </html>
