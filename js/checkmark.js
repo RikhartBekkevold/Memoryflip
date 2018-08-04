@@ -1,6 +1,9 @@
-// use drawing methods instead, that way we can
-// change colour easily?
-
+/**
+ * @constructor
+ * @param x x position
+ * @param y y position
+ * @param canvas canvas element to draw to
+ */
 function Checkmark(x, y, canvas) {
     this.x = x;
     this.y = y;
@@ -45,5 +48,4 @@ function Checkmark(x, y, canvas) {
         this.unchecked.visible = true;
         Settings.randomEvents = false;
     }
-
 }

@@ -1,12 +1,19 @@
+// set the
 let Settings = {
-    peekTime: 1000,  //replace constant in peek method.. should use global config instead
+    peekTime: 1000,
     num_cards: 16,
-    num_rows: 4,
-    randomEvents: false,
+    num_rows:  4,
+    randomEvents: false
 };
 
+if(localStorage.getItem('Settings') !== null) {
+    Settings = JSON.parse(localStorage.getItem('Settings'));
+}
 
-//wont change the obj, just other props vlues? so const?
+
+// let Settings = localStorage.getItem('settings') === null ? obj : localStorage.getItem('settings');
+
+//wont change the obj, just other props vlues? so const?.. meaning i wont add values to the object during runtime
 //another file called config? read upon load.. while this reads everytime/before game starts?
 //obj here that alters. style: style kinda thing?
 //wont add valaues to it, the obj
@@ -20,3 +27,12 @@ let Settings = {
     //
     // this.nrOfCards = 16;
     // this.nrOfRows = 4;
+
+    // localStorage.setItem('myCat', 'Tom');
+    //
+    // var cat = localStorage.getItem('myCat');
+    //
+    // localStorage.removeItem('myCat');
+    //
+    // // clear all items
+    // localStorage.clear();

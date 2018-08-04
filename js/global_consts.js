@@ -3,7 +3,16 @@ const IMG_ROOT      =  ROOT + "img/";
 const SOUND_ROOT    =  ROOT + "sound/";
 
 const PATHS = {
-    cardBGs:     IMG_ROOT + "cards/card_back",
+    cardBGs: [
+                IMG_ROOT + "cards/card_back0.png",
+                IMG_ROOT + "cards/card_back1.png",
+                IMG_ROOT + "cards/card_back2.png",
+                IMG_ROOT + "cards/card_back3.png",
+                IMG_ROOT + "cards/card_back4.png",
+                IMG_ROOT + "cards/card_back5.png",
+                IMG_ROOT + "cards/card_back6.png",
+                IMG_ROOT + "cards/card_back7.png"
+            ],
     cardFG:      IMG_ROOT + "cards/card_front.png",
     sceneBG:     IMG_ROOT + "background.png",
     endmessage:  IMG_ROOT + "endScreen.png",
@@ -26,7 +35,7 @@ const STYLE = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
     fontSize: 45,
     fontWeight: 'bold',
-    fill: ['#ffffff', '#ffffff'], // gradient
+    fill: ['#ffffff', '#ffffff'],
     stroke: '#4a1850',
     strokeThickness: 5,
     dropShadow: true,
