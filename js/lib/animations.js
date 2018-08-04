@@ -26,8 +26,8 @@ function slideLeft(element, canvas) {
 function slideOutandRemove(element, h) {
     const START_Y           =   JSON.parse(JSON.stringify(element.y));  //elements y value before moving
     const START_X           =   JSON.parse(JSON.stringify(element.x));  //elements x value before moving
-    const GRAVITY           =   0.4;            //acceleration - how many pixels faster each time
-    const AMPLITUDE         =   0;          //how many pixels to jump
+    const GRAVITY           =   0.4;                                    //acceleration - how many pixels faster each time
+    const AMPLITUDE         =   0;                                      //how many pixels to jump
     const OUT_OF_BOUNDS     =   0 - element.width;                      //hide element if <= oob
 
     let velocity = .001;

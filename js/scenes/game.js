@@ -43,11 +43,11 @@ function Game(canvas) {
 
 
 
-///////////////////////////////////////
+
 /**
  * Starts the game
  * @param delay the time in milliseconds before the cards starts drawing
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.init = function(delay) {
     // move this part? why preload every time?
@@ -76,7 +76,7 @@ Game.prototype.init = function(delay) {
 
 
 
-///////////////////////////////////////
+
 /**
  * Shows the backsides of all cards
  * @param none
@@ -91,11 +91,11 @@ Game.prototype.showAll = function() {
 
 
 
-///////////////////////////////////////
+
 /**
  * Shows the frontside of all cards
  * @param none
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.hideAll = function() {
     this.cards.forEach((card) => {
@@ -106,12 +106,12 @@ Game.prototype.hideAll = function() {
 
 
 
-///////////////////////////////////////
+
 /**
  * Shows the backside of all cards for 1 second before
  * flipping back
  * @param none
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.peek = function () {
     // peeking should punish the score
@@ -127,7 +127,7 @@ Game.prototype.peek = function () {
 
 
 
-///////////////////////////////////////
+
 /**
  * Checks if a card matches the previous card
  * @param card the card to check
@@ -148,13 +148,13 @@ Game.prototype.onCardClick = function(card) {
         });
         card.flipOver();
         self.flipSound.play();
-        self.checkIfGameOver();
+        self.gameOver();
     }
 };
 
 
 
-///////////////////////////////////////
+
 /**
  * Removes two cards from the board and array
  * @param card first card to remove
@@ -175,49 +175,46 @@ Game.prototype.removeCards = function (card, prevClickedCard) {
 
 
 
-///////////////////////////////////////
+
 /**
- * Resets the state of the two flipped cards
+ * Flips both cards back facedown.
  * @param card first card to remove
  * @param prevClickedCard second card to remove
  */
 Game.prototype.resetCards = function(card, prevClickedCard) {
-    var self = this;
-    self.allowFlip = false;
-    self.score.text = 'SCORE: ' + self.nrOfMovesMade++;
+    this.allowFlip = false;
+    this.score.text = 'SCORE: ' + this.nrOfMovesMade++;
     card.flipBack();
     prevClickedCard.flipBack();
 
-    // freeze input to cards
-    setTimeout(function () {
-        self.allowFlip = true;
+    // freeze input to cards while cards flip back
+    setTimeout(() => {
+        this.allowFlip = true;
     }, 500);
 };
 
 
 
-///////////////////////////////////////
-/**
- * Determines of game is over and initiates end screen if so
- */
-Game.prototype.checkIfGameOver = function() {
-    //check if game is over
-    var self = this;
 
-    if(self.cards.length === 0) {
-        setTimeout(function () {
-            // self.destroySelf();
-            SM.nextScene('end', self.nrOfMovesMade);
-        }, 1500);
+/**
+ * Determines if game is over and initiates end screen if so.
+ */
+Game.prototype.gameOver = function() {
+    const DELAY = 1500;
+
+    if(this.cards.length === 0) {
+        setTimeout(() => {
+            SM.nextScene('end', this.nrOfMovesMade);
+        }, DELAY);
     }
 };
 
 
 
-///////////////////////////////////////
+
 /**
  * Draws the cards unto the canvas
- * @param delay the time before the cards is drawn
+ * @param delay the time in millisecnds before the cards are drawn
  * @param canvas the canvas to draw the cards unto
  */
 Game.prototype.drawCards = function(delay, canvas) {
@@ -243,16 +240,17 @@ Game.prototype.drawCards = function(delay, canvas) {
 
 
 
-///////////////////////////////////////
+
 /**
- * Creates 18/12/8 card objects
+ * Creates card objects as per specified by 'nrOfCards'
  * @param none
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.createCards = function() {
-    // create 16 cards. pairs of cards share value nr
-    for(let i = 0; i < 2; i++) { //rows
-        for(let j = 0; j < this.nrOfCards/2; j++) { //columns
+    // number of loops equals number of rows
+    for(let i = 0; i < 2; i++) {
+        // number of loops equals number of columns
+        for(let j = 0; j < this.nrOfCards/2; j++) {
             this.cards.push(new Card(j, PATHS.cardBGs[j], this.cardContainer));
         }
     }
@@ -260,12 +258,12 @@ Game.prototype.createCards = function() {
 
 
 
-///////////////////////////////////////
+
 /**
  * Sets the x and y coordinates of all cards.
  * X axis is centered.
  * Y axis from the top.
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.setCardCoordinates = function() {
     const CARD_HALF_WIDTH       =   this.CARDS_WIDTH / 2;
@@ -289,24 +287,23 @@ Game.prototype.setCardCoordinates = function() {
 
 
 
-///////////////////////////////////////
+
 /**
  * Removes all menu buttons and slids them out of the screen.
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.removeMenuButtons = function() {
     for(var i = 0; i < this.menuButtons.length; i++) {
         slideOutandRemove(this.menuButtons[i]);
-        // this.canvas.removeChild(this.menuButtons[i]);
     }
 };
 
 
 
-///////////////////////////////////////
+
 /**
  * Removes all views.
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.destroySelf = function() {
     this.cards.forEach(function(card) {
@@ -317,71 +314,62 @@ Game.prototype.destroySelf = function() {
         this.canvas.removeChild(btn);
     });
     this.canvas.removeChild(this.score);
-    // this.nrOfMovesMade = 0;
-    // must remove container also?
 };
 
 
 
-///////////////////////////////////////
+
 /**
- * Resets game.
+ * Resets game by deleting elements and
+ * creating a new instance of 'Game'
+ * @return undefined
  */
 Game.prototype.resetGame = function() {
     this.destroySelf();
-    this.cards.forEach(function(card) {
-        card.removeView();
-    });
-
-    this.menuButtons.forEach((btn) => {
-        this.canvas.removeChild(btn);
-    });
-
-    this.cards = [];
-    this.canvas.removeChild(this.score);
-
     SM.currentScene = new Game(this.canvas);
     SM.currentScene.init(0);
 };
 
 
 
-///////////////////////////////////////
+
 /**
  * Selects two random cards left on the board and switches their position.
  * See: https://stackoverflow.com/questions/9719434/picking-2-random-elements-from-array
  * for randomization tips.
+ * @return undefined
  */
 Game.prototype.switchTwoCards = function() {
-
     // shuffles the cards left on board..
     shuffleCards(this.cards);
     // ..and selects the two first cards, essentially selecting two random cards
     var firstCard = this.cards[0];
     var secondCard = this.cards[1];
 
+    // moves the first card to the second card's location
     firstCard.startMove(secondCard.x, secondCard.y);
+    // and the second card to the first card's position
     secondCard.startMove(firstCard.x, firstCard.y);
 };
 
 
 
-///////////////////////////////////////
+
 /**
  * Initiates a card switch; 3 to 5 seconds after called.
  * Recursively calls itself to switch cards continuously.
- * @returns undefined
+ * @return undefined
  */
 Game.prototype.randomEvent = function() {
-    const MAX_SEC   =   2 * 1000;
-    const MIN_SEC   =   3 * 1000;
+    const MAX   =   2 * 1000;
+    const MIN   =   3 * 1000;
 
-    // generate random time between 5 seconds and 20 seconds
-    var randomTime  =   Math.round(MIN_SEC + Math.random() * MAX_SEC);
+    // generate random time between MIN seconds and MAX seconds
+    var randomTime  =   Math.round(MIN + Math.random() * MAX);
 
     console.log('Seconds to next card switch: ' + Math.round(randomTime / 1000));
 
-    // switch cards after random time
+    // switch cards after randomly generated time
     setTimeout(() => {
             this.switchTwoCards();
             this.randomEvent();

@@ -76,15 +76,18 @@ SettingsScreen.prototype.setDifficulty = function () {
         this.valueText.text = 16 + ' cards';
     }
 
-    localStorage.setItem('Settings', JSON.stringify(Settings)); // dont want inside event handler
-
+    localStorage.setItem('Settings', JSON.stringify(Settings));
 };
 
 
 ///////////////////////////////////////
 SettingsScreen.prototype.destroySelf = function() {
-    this.canvas.removeChild(this.visual);
-    delete this.slider;  // cant destroy window objects
+    this.canvas.removeChild(this.slider.visual);
+    // canvas.addChild(this.backBtn);
+    // // canvas.addChild(this.cancelBtn);
+    // canvas.addChild(this.valueText);
+    // canvas.addChild(this.diffText);
+    // canvas.addChild(this.eventsText);
 };
 
 
