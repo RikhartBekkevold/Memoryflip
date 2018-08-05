@@ -4,8 +4,3 @@ Memoryflip is a card flipping game made in vanilla javascript  with the help of 
 
 ## Play the game here: ##
 https://rikhartbekkevold.github.io/cardflip-game
-
-
-- `SceneManager` changes scene object and destroys previous.
-- `Game`
-- `EndScreen`
