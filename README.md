@@ -5,54 +5,7 @@ Memoryflip is a card flipping game made in vanilla javascript  with the help of 
 ## Play the game here: ##
 https://rikhartbekkevold.github.io/cardflip-game
 
-```javascript   
-    SceneManager
- ```
 
-## Goals ##
-
- * Test pixi.js
- * Make own animations
- * Practice some basic math
-
-
-<!-- ## How to use ##
-
- ```javascript
- function youSuck(arg) {
-   if(arg)
-     return true;
-   else
-    return true;
- }
- ``` -->
-
-
-<!--
-
-The game consist of 4 scenes:
-* Game
-* StartScreen
-* EndScreen
-* SettingsScreen
-
-On load SceneManager starts the StartScreen scene.
-
-## Usage
-
-
-## Documentation
-
-```javascript
-// new instance of game
-new Game()
-// looks at all cards
-peek()
-//
-resetGame()
-//
-init()
-
-
-
-``` -->
+- `SceneManager` changes scene object and destroys previous.
+- `Game`
+- `EndScreen`
