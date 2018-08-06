@@ -1,3 +1,14 @@
+/**
+ * The representation of a card on the board. The visual
+ * part of the card consists of two sprites, a backside
+ * and frontside view
+ * @param v the value of the card
+ * @param b the backside texture
+ * @param canvas the view element to draw the card onto
+ * @param x the card's coordinate on the x axis
+ * @param y the card's coordinate on the y axis
+ * @return undefined
+ */
 function Card(v, b, canvas, x, y) {
     this.canvas     =   canvas;
     this.value      =   v;
@@ -19,12 +30,15 @@ function Card(v, b, canvas, x, y) {
 };
 
 
-///////////////////////////////////////
+
 /**
- * Draws either one of the cards to the board
+ * If flipped draws the backside of the card, else
+ * draws the frontside of the card to the view
+ * @return undefined
  */
 Card.prototype.draw = function() {
-    if (this.flipped) {
+
+    if(this.flipped) {
         if(this.backView.visible === false) {
             this.backView.visible = true;
         }
@@ -50,7 +64,13 @@ Card.prototype.draw = function() {
 };
 
 
-///////////////////////////////////////
+/**
+ * Visually flips the card over by shrinking the
+ * scale of the frontview card, on the x axis, from 1 to 0, and then increasing
+ * the scale of the backview from 0 to 1 creating the
+ * appearance of a card flip
+ * @return undefined
+ */
 Card.prototype.flipOver = function() {
     var card = this;
 
@@ -72,7 +92,10 @@ Card.prototype.flipOver = function() {
 };
 
 
-///////////////////////////////////////
+/**
+ * Reverse of flipOver()
+ * @return undefined
+ */
 Card.prototype.flipBack = function(){
     var card = this;
 
@@ -96,14 +119,21 @@ Card.prototype.flipBack = function(){
 };
 
 
-///////////////////////////////////////
+/**
+ * Removes both views from the board that
+ * the card consists of
+ * @return undefined
+ */
 Card.prototype.removeView = function() {
     this.canvas.removeChild(this.backView);
     this.canvas.removeChild(this.frontView);
 };
 
 
-///////////////////////////////////////
+/**
+ * Animates the removal of the card from the board
+ * @return undefined
+ */
 Card.prototype.removeCard = function() {
     const fade  = 0.3;
     const delay = 1000;
@@ -121,7 +151,13 @@ Card.prototype.removeCard = function() {
 };
 
 
-///////////////////////////////////////
+/**
+ * Move the the card to the coordinates passed
+ * as arguments
+ * @param x the x coord to move the card towards
+ * @param y the y coordinateto move the cards towards
+ * @return undefined
+ */
 Card.prototype.startMove = function(x, y) {
     var sameColumn          = this.x === x ? true : false;
     var biggerX             = this.x > x ? true : false;
@@ -172,7 +208,14 @@ Card.prototype.startMove = function(x, y) {
 };
 
 
-///////////////////////////////////////
+/**
+ * Stops the card from moving. Makes sure the card is
+ * position exactly where it was intended to move to
+ * @param move the current running interval to stop
+ * @param x the value to set the cards x position to
+ * @param y the value to set the cards y position to
+ * @return undefined
+ */
 Card.prototype.stopMove = function(move, x, y) {
     clearInterval(move);
     this.x = x;

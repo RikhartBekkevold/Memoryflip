@@ -2,7 +2,7 @@
  * Shuffles an array following the Fisher-Yates algorithm.
  * Taken from: https://bost.ocks.org/mike/shuffle/
  * @param array array to shuffle
- * @return the shuffled array
+ * @return array the shuffled array
  */
 shuffleCards = function(array) {
     var m = array.length, t, i;

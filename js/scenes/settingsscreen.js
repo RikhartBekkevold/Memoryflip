@@ -1,9 +1,17 @@
+/**
+ * Creates the setting screen. With option to set difficulty
+ * and enable randomly timed switching of cards.
+ * @param canvas the element to draw the scene to
+ * @return undefined
+ */
 function SettingsScreen(canvas) {
     this.canvas = canvas;
     this.padding = 200;
     this.valueText = new PIXI.Text('Easy: ' + 0 + '%', ALT_STYLE3);
     this.diffText = new PIXI.Text('Difficulty ', ALT_STYLE2);
-    this.eventsText = new PIXI.Text('Toggle random events', ALT_STYLE2);
+    this.eventsText = new PIXI.Text('Let cards randomly switch', ALT_STYLE2);
+
+    // loop creation
 
     this.valueText.y = 200;
     this.valueText.x = innerWidth/2 - (this.valueText.width/2);
@@ -52,7 +60,11 @@ function SettingsScreen(canvas) {
 };
 
 
-///////////////////////////////////////
+/**
+ * Sets the difficulty depending on slider position.
+ * Saves to localstorage.
+ * @return undefined
+ */
 SettingsScreen.prototype.setDifficulty = function () {
     // this looks wrong with 'value'
     // this.valueText.text = 'Value: ' + this.slider.getSliderVal();
@@ -80,7 +92,10 @@ SettingsScreen.prototype.setDifficulty = function () {
 };
 
 
-///////////////////////////////////////
+/**
+ * Every scene needs it's own destroySelf method
+ * @return undefined
+ */
 SettingsScreen.prototype.destroySelf = function() {
     this.canvas.removeChild(this.slider.visual);
     // canvas.addChild(this.backBtn);
@@ -92,13 +107,17 @@ SettingsScreen.prototype.destroySelf = function() {
 
 
 ///////////////////////////////////////
-SettingsScreen.prototype.exitScene = function() {
-    this.setDifficulty();
-    this.removeScene();
-};
+// SettingsScreen.prototype.exitScene = function() {
+//     this.setDifficulty();
+//     this.removeScene();
+// };
 
 
-///////////////////////////////////////
+/**
+ * Saves the state of the difficulty slider and then
+ * returns to start screen
+ * @return undefined
+ */
 SettingsScreen.prototype.saveAndGoBack = function() {
     this.setDifficulty();
     SM.nextScene('start');

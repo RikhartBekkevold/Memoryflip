@@ -1,5 +1,6 @@
 /**
- *  @param width
+ *  Creates a square (knob) using pixi graphics.
+ *  @param width width of the knob, height set to same value to create a square
  *  @param knobColour colour of knob
  *  @param x x position of knob
  *  @param y y position of knob
@@ -49,7 +50,6 @@ var Slider = function(width, length, notCentered, valueText, slideColour, knobCo
     slide.buttonMode = true;
     slide.alpha = 0.2;
 
-    // Add a hit area..
     slide.hitArea = new PIXI.Rectangle(this.SLIDE_X0, this.SLIDE_Y0 - this.SLIDE_WIDTH / 2, this.SLIDE_LENGTH, this.SLIDE_WIDTH);
 
     slide.click = function (e) {

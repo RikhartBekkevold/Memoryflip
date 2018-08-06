@@ -1,3 +1,8 @@
+/**
+ * Creates the startscreen with the options to go to
+ * game scene, settings screen or to quit
+ * @param canvas the element to draw to
+ */
 function StartScreen(canvas) {
     this.container          =   new PIXI.Container();
     this.background         =   PIXI.Sprite.fromImage(PATHS.sceneBG);
@@ -24,16 +29,15 @@ function StartScreen(canvas) {
 
                     this.buttons.forEach((btn, i) => {
                         btn.anchor.set(0.5);
-                        btn.x               = game.renderer.width/2;
-                        btn.y               = i === 0 ? ((game.renderer.height/2) - ((this.startBtn.height/2) + 100)) : (this.buttons[i-1].y + this.BTN_SPACING);
+                        btn.x = game.renderer.width/2;
+                        btn.y = i === 0 ? ((game.renderer.height/2) - ((this.startBtn.height/2) + 100)) : (this.buttons[i-1].y + this.BTN_SPACING);
 
-                        btn.interactive     = true;
-                        btn.buttonMode      = true;
+                        btn.interactive = true;
+                        btn.buttonMode  = true;
 
-                        i === 0 ? btn.on('pointerup', () => this.startGame())
-                        : i === 1 ? btn.on('pointerup', () => this.changeGameSettings())
-                        :           btn.on('pointerup', () => this.quitGame());
-                    
+                        i === 0 ? btn.on('pointerup',  () => { SM.nextScene('game') })
+                        : i === 1 ? btn.on('pointerup', () => { SM.nextScene('settings') })
+                        :           btn.on('pointerup', () => { window.history.back() });
 
                         this.container.addChild(btn);
                     });
@@ -44,35 +48,11 @@ function StartScreen(canvas) {
 };
 
 
-/////////////////////////////////
-StartScreen.prototype.startGame = function() {
-    this.hideLines();
-    SM.nextScene('game');
-};
-
-
-/////////////////////////////////
-StartScreen.prototype.changeGameSettings = function() {
-    this.hideLines();
-    SM.nextScene('settings');
-};
-
-
-/////////////////////////////////
-StartScreen.prototype.quitGame = function() {
-    window.history.back();
-};
-
-
-/////////////////////////////////
-StartScreen.prototype.hideLines = function() {
-   this.lines.forEach((line) => {
-       line.visible = false;
-   });
-};
-
-
-/////////////////////////////////
+/**
+ * Slides all buttons out of view and removes them
+ * from the canvas
+ * @return undefined
+ */
 StartScreen.prototype.destroySelf = function() {
     this.buttons.forEach((btn) => {
         slideOutandRemove(btn);

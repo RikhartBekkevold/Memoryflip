@@ -28,7 +28,7 @@ const PATHS = {
 
 const STYLE = new PIXI.TextStyle({
     fontFamily: 'Helvetica',
-    fontSize: 45,
+    fontSize: 30,
     fontWeight: 'bold',
     fill: ['#ffffff', '#ffffff'],
     stroke: '#4a1850',

@@ -10,20 +10,11 @@
 			margin: 0;
 		}
         body {
-            margin: 0px;
             height: 100%;
-            padding: 0px;
-			overflow: hidden; /* dont like. always scrollbars*/
-            /* background: #221F1F; */
+			overflow: hidden;
         }
         html {
-            margin: 0px;
-            padding: 0px;
 			height: 100%;
-        }
-        canvas {
-            margin: 0px;
-            padding: 0px;
         }
     </style>
 </head>
@@ -33,7 +24,7 @@
 		var game = new PIXI.Application(
 			document.body.clientWidth,
 			document.body.clientHeight,
-			{backgroundColor : 0xddd}
+			{ backgroundColor : 0xddd }
 		);
 		document.body.appendChild(game.view);
 	</script>

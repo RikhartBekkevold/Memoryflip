@@ -1,6 +1,7 @@
 /**
- * @constructor call with 'new' to create an instance
+ * Main scene, the game itself
  * @param canvas the canvas to draw the game unto
+ * @return undefined
  */
 function Game(canvas) {
     this.canvas                 = canvas;
@@ -57,11 +58,6 @@ Game.prototype.init = function(delay) {
                .load(() => {
                     this.canvas.addChild(this.cardContainer);
                     this.createCards();
-                    // for(let i = 0; i < 2; i++) { //rows
-                    //     for(let j = 0; j < this.nrOfCards/2; j++) { //columns
-                    //         this.cards.push(new Card(j, PATHS.cardBGs[j], this.cardContainer));
-                    //     }
-                    // }
                     this.cards = shuffleCards(this.cards);
                     this.setCardCoordinates();
                     this.drawCards(delay, this.canvas);
@@ -78,8 +74,7 @@ Game.prototype.init = function(delay) {
 
 
 /**
- * Shows the backsides of all cards
- * @param none
+ * Shows the backside of all cards
  * @return undefined
  */
 Game.prototype.showAll = function() {
@@ -94,7 +89,6 @@ Game.prototype.showAll = function() {
 
 /**
  * Shows the frontside of all cards
- * @param none
  * @return undefined
  */
 Game.prototype.hideAll = function() {
@@ -110,7 +104,6 @@ Game.prototype.hideAll = function() {
 /**
  * Shows the backside of all cards for 1 second before
  * flipping back
- * @param none
  * @return undefined
  */
 Game.prototype.peek = function () {
@@ -131,6 +124,7 @@ Game.prototype.peek = function () {
 /**
  * Checks if a card matches the previous card
  * @param card the card to check
+ * @return undefined
  */
 Game.prototype.onCardClick = function(card) {
     var self = this;
@@ -156,9 +150,10 @@ Game.prototype.onCardClick = function(card) {
 
 
 /**
- * Removes two cards from the board and array
+ * Removes two cards from the board
  * @param card first card to remove
  * @param prevClickedCard second card to remove
+ * @return undefined
  */
 Game.prototype.removeCards = function (card, prevClickedCard) {
     var self = this;
@@ -180,6 +175,7 @@ Game.prototype.removeCards = function (card, prevClickedCard) {
  * Flips both cards back facedown.
  * @param card first card to remove
  * @param prevClickedCard second card to remove
+ * @return undefined
  */
 Game.prototype.resetCards = function(card, prevClickedCard) {
     this.allowFlip = false;
@@ -198,6 +194,7 @@ Game.prototype.resetCards = function(card, prevClickedCard) {
 
 /**
  * Determines if game is over and initiates end screen if so.
+ * @return undefined
  */
 Game.prototype.gameOver = function() {
     const DELAY = 1500;
@@ -213,9 +210,10 @@ Game.prototype.gameOver = function() {
 
 
 /**
- * Draws the cards unto the canvas
+ * Draws the cards onto the canvas
  * @param delay the time in millisecnds before the cards are drawn
  * @param canvas the canvas to draw the cards unto
+ * @return undefined
  */
 Game.prototype.drawCards = function(delay, canvas) {
     var self = this;
@@ -242,14 +240,12 @@ Game.prototype.drawCards = function(delay, canvas) {
 
 
 /**
- * Creates card objects as per specified by 'nrOfCards'
- * @param none
+ * Creates as many card objects as equal to 'nrOfCards'.
+ * Give two and two cards the same value and backside sprite
  * @return undefined
  */
 Game.prototype.createCards = function() {
-    // number of loops equals number of rows
     for(let i = 0; i < 2; i++) {
-        // number of loops equals number of columns
         for(let j = 0; j < this.nrOfCards/2; j++) {
             this.cards.push(new Card(j, PATHS.cardBGs[j], this.cardContainer));
         }
@@ -260,23 +256,27 @@ Game.prototype.createCards = function() {
 
 
 /**
- * Sets the x and y coordinates of all cards.
- * X axis is centered.
- * Y axis from the top.
+ * Sets the coordinates of all cards to the center
+ * of the screen on the x axis and the top of the
+ * screen on the y axis
  * @return undefined
  */
 Game.prototype.setCardCoordinates = function() {
-    const CARD_HALF_WIDTH       =   this.CARDS_WIDTH / 2;
-    const SCREEN_HALF_WIDTH     =   document.body.clientWidth / 2;
-    const CARD_HALF_HEIGHT      =   this.CARDS_HEIGHT / 2;
-    const WIDTH_OF_ALL_CARDS    =   ((this.CARDS_WIDTH + this.PADDING) * (this.nrOfCards / this.nrOfRows) - this.PADDING) / 2;
-    const START_POS_X           =   (SCREEN_HALF_WIDTH - WIDTH_OF_ALL_CARDS) + CARD_HALF_WIDTH;
-    const START_POS_Y           =   CARD_HALF_HEIGHT + 20;
+    const CARD_HALF_WIDTH           =   this.CARDS_WIDTH / 2;
+    const SCREEN_HALF_WIDTH         =   document.body.clientWidth / 2;
+    const CARD_HALF_HEIGHT          =   this.CARDS_HEIGHT / 2;
+    const HALF_WIDTH_OF_ALL_CARDS   =   ((this.CARDS_WIDTH + this.PADDING) * (this.nrOfCards / this.nrOfRows) - this.PADDING) / 2;
+
+    // use the values above to calculate the start positions for x and y
+    const START_POS_X               =   (SCREEN_HALF_WIDTH - HALF_WIDTH_OF_ALL_CARDS) + CARD_HALF_WIDTH;
+    const START_POS_Y               =   CARD_HALF_HEIGHT + 20;
 
     let card_nr = 0;
 
-    for(let l = 0; l < this.nrOfRows; l++) {  //3 rows
-        for(let k = 0; k < this.nrOfCards/this.nrOfRows; k++) {   //colomns 12/3 = 4
+    // number of loops equals number of rows
+    for(let l = 0; l < this.nrOfRows; l++) {
+        // number of loops equals number of columns
+        for(let k = 0; k < this.nrOfCards/this.nrOfRows; k++) {
             // the length of previous cards + padding + start position
             this.cards[card_nr].x = (k * this.CARDS_WIDTH) + (this.PADDING * k) + START_POS_X;
             this.cards[card_nr].y = (l * this.CARDS_HEIGHT) + (this.PADDING * l) + START_POS_Y;
@@ -289,7 +289,7 @@ Game.prototype.setCardCoordinates = function() {
 
 
 /**
- * Removes all menu buttons and slids them out of the screen.
+ * Removes all menu buttons and slids them out of the screen
  * @return undefined
  */
 Game.prototype.removeMenuButtons = function() {
@@ -302,7 +302,7 @@ Game.prototype.removeMenuButtons = function() {
 
 
 /**
- * Removes all views.
+ * Removes all PIXI elements from the game board
  * @return undefined
  */
 Game.prototype.destroySelf = function() {
@@ -334,9 +334,9 @@ Game.prototype.resetGame = function() {
 
 
 /**
- * Selects two random cards left on the board and switches their position.
- * See: https://stackoverflow.com/questions/9719434/picking-2-random-elements-from-array
- * for randomization tips.
+ * Selects two random cards left on the board and switches
+ * their position. Tips on randomzation from:
+ * https://stackoverflow.com/questions/9719434/picking-2-random-elements-from-array
  * @return undefined
  */
 Game.prototype.switchTwoCards = function() {
@@ -345,7 +345,6 @@ Game.prototype.switchTwoCards = function() {
     // ..and selects the two first cards, essentially selecting two random cards
     var firstCard = this.cards[0];
     var secondCard = this.cards[1];
-
     // moves the first card to the second card's location
     firstCard.startMove(secondCard.x, secondCard.y);
     // and the second card to the first card's position
@@ -356,16 +355,16 @@ Game.prototype.switchTwoCards = function() {
 
 
 /**
- * Initiates a card switch; 3 to 5 seconds after called.
+ * Initiates a switch of two cards 5 to 15 seconds after called.
  * Recursively calls itself to switch cards continuously.
  * @return undefined
  */
 Game.prototype.randomEvent = function() {
-    const MAX   =   2 * 1000;
-    const MIN   =   3 * 1000;
+    const MIN   =   5 * 1000;
+    const MAX   =   10 * 1000;
 
     // generate random time between MIN seconds and MAX seconds
-    var randomTime  =   Math.round(MIN + Math.random() * MAX);
+    var randomTime = Math.round(MIN + Math.random() * MAX);
 
     console.log('Seconds to next card switch: ' + Math.round(randomTime / 1000));
 

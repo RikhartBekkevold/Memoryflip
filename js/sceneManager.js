@@ -1,7 +1,5 @@
-//////////////////////////////////////////////////////////////////
 /**
- * Centralized handler for scene switching.
- * @returns undefined
+ * Handler for scene switching.
  */
 function SceneManager() {
     this.formattedScenes  = '';
@@ -29,17 +27,15 @@ function SceneManager() {
 };
 
 
-//////////////////////////////////////////////////////////////////
-/**
-     Deletes current scene and starts next scene.
-     @param scene type {string} name identifier for scene to initiate
-     @param current the current scene (that calls the function)
-     @param data any optional data to be passed to the new scene
-     @returns undefined
 
+/**
+ * Deletes current scene and initiates next scene.
+ * @param scene type {string} name identifier for scene to initiate
+ * @param current the current scene (that calls the function)
+ * @param data any optional data to be passed to the new scene
  */
 SceneManager.prototype.nextScene = function(scene, data) {
-
+    // 
     if(this.currentScene !== null) {
         if(typeof this.currentScene.destroySelf === 'function') {
             this.currentScene.destroySelf();
@@ -53,16 +49,15 @@ SceneManager.prototype.nextScene = function(scene, data) {
     }
 
     this.switchScene(scene, data);
-
 };
 
 
-//////////////////////////////////////////////////////////////////
+
 /**
-    @param scene type {string} name identifier for scene to initiate
-    @param data any optional data to be passed to the new scene
-    Determines which scene to initate.
- */
+ * Determines which scene to initate.
+ * @param scene {string} name identifier for scene to initiate
+ * @param data any optional data to be passed to the new scene
+*/
 SceneManager.prototype.switchScene = function(scene, data) {
     switch(scene.toLowerCase()) {
         case this.SCENES[0]:
