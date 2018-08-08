@@ -74,6 +74,9 @@ Card.prototype.draw = function() {
 Card.prototype.flipOver = function() {
     var card = this;
 
+
+    // request animation frame with delta
+
     var flip = setInterval(function() {
         card.frontView.scale.x -= 0.1;
 
@@ -93,29 +96,30 @@ Card.prototype.flipOver = function() {
 
 
 /**
- * Reverse of flipOver()
+ * Does same as flipOver(), in reverse
  * @return undefined
  */
-Card.prototype.flipBack = function(){
-    var card = this;
+Card.prototype.flipBack = function() {
+     const DELAY =  700;
+     const HZ    =  10;
 
     setTimeout(() => {
         let flip = setInterval(() => {
-            card.backView.scale.x -= 0.1;
+            this.backView.scale.x -= 0.1;
 
-            if(card.backView.scale.x < 0) {
-                card.backView.scale.x = 0;
-                card.flipped = false;
-                card.draw();
+            if(this.backView.scale.x < 0) {
+                this.backView.scale.x = 0;
+                this.flipped = false;
+                this.draw();
 
-                card.frontView.scale.x += 0.1;
-                if(card.frontView.scale.x > 0.9) {
-                    card.frontView.scale.x = 1;
+                this.frontView.scale.x += 0.1;
+                if(this.frontView.scale.x > 0.9) {
+                    this.frontView.scale.x = 1;
                     clearInterval(flip);
                 }
             }
-        }, 10);
-    }, 700);
+        }, HZ);
+    }, DELAY);
 };
 
 
@@ -152,8 +156,7 @@ Card.prototype.removeCard = function() {
 
 
 /**
- * Move the the card to the coordinates passed
- * as arguments
+ * Moves the card to x and y
  * @param x the x coord to move the card towards
  * @param y the y coordinateto move the cards towards
  * @return undefined
@@ -163,20 +166,21 @@ Card.prototype.startMove = function(x, y) {
     var biggerX             = this.x > x ? true : false;
     var biggerY             = this.y > y ? true : false;
     var speed               = 5;
-    const REFRESH_RATE      = 1;
+    const HZ                = 1;
 
-    if(this.x < x && sameColumn === false && biggerX === true) {
-        console.log('y');
-        return
-    }
-    if(this.x > x && sameColumn === false && biggerX === false) {
-        console.log('u');
-        return
-    }
+    // if(this.x < x && sameColumn === false && biggerX === true) {
+    //     console.log('y');
+    //     return
+    // }
+    // if(this.x > x && sameColumn === false && biggerX === false) {
+    //     console.log('u');
+    //     return
+    // }
 
-    console.log(this.value +': ' + x + ', ' + y);
+    // console.log(this.value +': ' + x + ', ' + y);
 
     const move = setInterval(() => {
+
         this.rotation = Math.atan2(y - this.y, x - this.x);
 
         this.x += Math.cos(this.rotation) * speed;
@@ -184,15 +188,14 @@ Card.prototype.startMove = function(x, y) {
             this.y += Math.sin(this.rotation) * speed;
         }
 
-        // same row and right
+        // the cards start position can be to the left, right, above or below its end goal
+        // each of these types (locations) have a different condition under which it is determined that they need to stop
         if(this.x > x && sameColumn === false && biggerX === false) {
             this.stopMove(move, x, y);
         }
-        // same row and left
         else if(this.x <= x && sameColumn === false && biggerX === true) {
             this.stopMove(move, x, y);
         }
-        // not same row and
         else if(this.y > y && sameColumn === true && biggerY === true) {
             this.stopMove(move, x, y);
         }
@@ -200,17 +203,29 @@ Card.prototype.startMove = function(x, y) {
             this.stopMove(move, x, y);
         }
 
-
         this.draw();
 
-    }, REFRESH_RATE);
-
+    }, HZ);
 };
 
 
+// websocket
+// firebase? - global scoreboard - chat?
+// phaser? some engine
+// physics, animation
+
+// pythong, mongoDB, rasperry pie
+// node.js
+// express.js
+
+
+
+// babel
+
+
 /**
- * Stops the card from moving. Makes sure the card is
- * position exactly where it was intended to move to
+ * Stops the card from moving and ensures that the card is
+ * positioned exactly where it was intended to stop.
  * @param move the current running interval to stop
  * @param x the value to set the cards x position to
  * @param y the value to set the cards y position to
