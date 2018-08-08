@@ -209,19 +209,6 @@ Card.prototype.startMove = function(x, y) {
 };
 
 
-// websocket
-// firebase? - global scoreboard - chat?
-// phaser? some engine
-// physics, animation
-
-// pythong, mongoDB, rasperry pie
-// node.js
-// express.js
-
-
-
-// babel
-
 
 /**
  * Stops the card from moving and ensures that the card is
