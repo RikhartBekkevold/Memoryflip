@@ -8,5 +8,5 @@ https://rikhartbekkevold.github.io/cardflip-game
 ## Code structure ##
 
 Each scene is an object ``` Startscreen ```, ``` Game ```, ```Settingscreen ``` and ``` Endscreen ```. Switching scenes is done with a call to the ``` SceneManager ``` object which
-then destroys the current scene and creates the new scene. Since destroying the current scene is achieved by calling the current scenes own destroy method, each scene need to implement
+then destroys the current scene and creates the new scene. Since destroying the current scene is achieved by calling the current scenes own destroy method, each scene needs to implement
 this method.
