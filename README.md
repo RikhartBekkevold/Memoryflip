@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="resources/memoryflip.PNG" />
+    <img src="resources/memoryflip.gif" />
 </div>
 
 # Memoryflip
