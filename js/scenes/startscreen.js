@@ -49,8 +49,8 @@ function StartScreen(canvas) {
 
 
 /**
- * Slides all buttons out of view and removes them
- * from the canvas
+ * Each scene needs a destroySelf function which the
+ * scene manager calls before initating a new scene
  * @return undefined
  */
 StartScreen.prototype.destroySelf = function() {

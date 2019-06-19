@@ -26,7 +26,7 @@ function SceneManager() {
     this.currentScene = new StartScreen(game.stage);
 };
 
-
+// gfunction that itrates object given and then deletes everything/every properties of type sprite or something. more utilityish
 
 /**
  * Deletes current scene and initiates next scene.
@@ -35,10 +35,12 @@ function SceneManager() {
  * @param data any optional data to be passed to the new scene
  */
 SceneManager.prototype.nextScene = function(scene, data) {
-    // 
+    //
     if(this.currentScene !== null) {
         if(typeof this.currentScene.destroySelf === 'function') {
             this.currentScene.destroySelf();
+            // if destroying game and random events init. stop recursion.
+            
         }
         else {
             console.error(this.DEST_ERROR);

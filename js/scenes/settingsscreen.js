@@ -93,7 +93,8 @@ SettingsScreen.prototype.setDifficulty = function () {
 
 
 /**
- * Every scene needs it's own destroySelf method
+ * Each scene needs a destroySelf function which the
+ * scene manager calls before initating a new scene
  * @return undefined
  */
 SettingsScreen.prototype.destroySelf = function() {

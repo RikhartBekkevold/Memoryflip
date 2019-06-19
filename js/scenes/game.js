@@ -53,21 +53,22 @@ function Game(canvas) {
 Game.prototype.init = function(delay) {
     // move this part? why preload every time?
     PIXI.loader.reset();
-    PIXI.loader.add(PATHS.cardFG)
-               .add(PATHS.cardBGs)
-               .load(() => {
-                    this.canvas.addChild(this.cardContainer);
-                    this.createCards();
-                    this.cards = shuffleCards(this.cards);
-                    this.setCardCoordinates();
-                    this.drawCards(delay, this.canvas);
-                    this.cards.forEach((card) => {
-                        card.frontView.on('pointerup', () => this.onCardClick(card));
-                    });
-                    if(this.enableEvents) {
-                        this.randomEvent();
-                    }
-                });
+    PIXI.loader
+       .add(PATHS.cardFG)
+       .add(PATHS.cardBGs)
+       .load(() => {
+            this.canvas.addChild(this.cardContainer);
+            this.createCards();
+            this.cards = shuffleCards(this.cards);
+            this.setCardCoordinates();
+            this.drawCards(delay, this.canvas);
+            this.cards.forEach((card) => {
+                card.frontView.on('pointerup', () => this.onCardClick(card));
+            });
+            if(this.enableEvents) {
+                this.randomEvent();
+            }
+        });
 };
 
 
@@ -178,12 +179,16 @@ Game.prototype.removeCards = function (card, prevClickedCard) {
  * @return undefined
  */
 Game.prototype.resetCards = function(card, prevClickedCard) {
+    // freeze input to cards while reseting
     this.allowFlip = false;
     this.score.text = 'SCORE: ' + this.nrOfMovesMade++;
-    card.flipBack();
-    prevClickedCard.flipBack();
 
-    // freeze input to cards while cards flip back
+    setTimeout(() => {
+        card.flipBack();
+        prevClickedCard.flipBack();
+    }, 700);
+
+    // open input to cards while cards flip back
     setTimeout(() => {
         this.allowFlip = true;
     }, 500);
@@ -302,7 +307,8 @@ Game.prototype.removeMenuButtons = function() {
 
 
 /**
- * Removes all PIXI elements from the game board
+ * Each scene needs a destroySelf function which the
+ * scene manager calls before initating a new scene
  * @return undefined
  */
 Game.prototype.destroySelf = function() {
@@ -354,6 +360,7 @@ Game.prototype.switchTwoCards = function() {
 
 
 
+
 /**
  * Initiates a switch of two cards 5 to 15 seconds after called.
  * Recursively calls itself to switch cards continuously.
@@ -362,6 +369,7 @@ Game.prototype.switchTwoCards = function() {
 Game.prototype.randomEvent = function() {
     const MIN   =   5 * 1000;
     const MAX   =   10 * 1000;
+    let gameIsOver = false; // move this to scope that can be accessed
 
     // generate random time between MIN seconds and MAX seconds
     var randomTime = Math.round(MIN + Math.random() * MAX);
@@ -370,7 +378,13 @@ Game.prototype.randomEvent = function() {
 
     // switch cards after randomly generated time
     setTimeout(() => {
-            this.switchTwoCards();
+        this.switchTwoCards();
+        if (gameIsOver === false) {
             this.randomEvent();
+        }
     }, randomTime);
+
+    // TODO: add end loop when game is destroyed - nextScene called
+
+
 };

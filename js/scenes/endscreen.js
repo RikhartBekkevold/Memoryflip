@@ -21,7 +21,7 @@ function EndScreen(canvas, score) {
     this.endScore.text          =   (score === undefined ? 0 : score);
     this.retryBtn.interactive   =   true;
     this.retryBtn.buttonMode    =   true;
-    this.methodName(padding);
+
     this.retryBtn.on('pointerup', () => this.restartGame());
 };
 
@@ -34,6 +34,7 @@ function EndScreen(canvas, score) {
 EndScreen.prototype.restartGame = function() {
     SM.nextScene('game');
 };
+
 
 /**
  * Each scene needs a destroySelf function which the

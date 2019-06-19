@@ -62,8 +62,8 @@ Card.prototype.draw = function() {
         this.backView.visible = false;
     }
 };
-
-
+// console.log(performance.now());
+// all game logic and some of the animation is handled on click. no need every update
 /**
  * Visually flips the card over by shrinking the
  * scale of the frontview card, on the x axis, from 1 to 0, and then increasing
@@ -72,26 +72,71 @@ Card.prototype.draw = function() {
  * @return undefined
  */
 Card.prototype.flipOver = function() {
-    var card = this;
-
-
+    // // var card = this;
+    // var self = this;
+    let ani = requestAnimationFrame( () => { this.flipOver(); } );
     // request animation frame with delta
 
-    var flip = setInterval(function() {
-        card.frontView.scale.x -= 0.1;
+    console.log(performance.now());
 
-        if(card.frontView.scale.x < 0) {
-            card.frontView.scale.x = 0;
-            card.flipped = true;
-            card.draw();
-            card.backView.scale.x += 0.1;
+    this.frontView.scale.x -= 0.1;
 
-            if(card.backView.scale.x > 0.9) {
-                card.backView.scale.x = 1;
-                clearInterval(flip);
-            }
+    if(this.frontView.scale.x < 0) {
+        this.frontView.scale.x = 0;
+        this.flipped = true;
+        this.draw();
+        this.backView.scale.x += 0.1;
+
+        if(this.backView.scale.x > 0.9) {
+            this.backView.scale.x = 1;
+            cancelAnimationFrame(ani);
         }
-    }, 20);
+    }
+
+    // interval i want. interval that has passed (delta)
+    // so i want 20 sec to pass . thats the interval. time between each time/call i want to pass
+    // "time_between_calls".. maybe call it delta? opptimiztic?
+
+    // // what is the current time
+    // currentTime = (new Date()).getTime();
+    // // how much time has passed
+    // delta = (currentTime-lastTime);
+    //
+    // //  has enough time passed? is the time passed bigger than the FPS/interval?
+    // if(delta > interval) {
+    //
+    //     // animation here...
+    //
+    //     //
+    //     lastTime = currentTime - (delta % interval);
+    // }
+
+    // tweening
+
+    // decouple animation and game logic from gameloop. only needed on click
+
+    // console.log('d');
+
+    // if(this.backView.scale.x > 0.9) {
+    //      this.backView.scale.x = 1;
+    //      cancelAnimationFrame(flip);
+    //  }
+
+    // var flip = setInterval(() => {
+    //     this.frontView.scale.x -= 0.1 * delta; // delta might not work here
+    //
+    //     if(this.frontView.scale.x < 0) {
+    //         this.frontView.scale.x = 0;
+    //         this.flipped = true;
+    //         this.draw();
+    //         this.backView.scale.x += 0.1;
+    //
+    //         if(this.backView.scale.x > 0.9) {
+    //             this.backView.scale.x = 1;
+    //             clearInterval(flip);
+    //         }
+    //     }
+    // }, 20);
 };
 
 
@@ -100,26 +145,114 @@ Card.prototype.flipOver = function() {
  * @return undefined
  */
 Card.prototype.flipBack = function() {
-     const DELAY =  700;
-     const HZ    =  10;
+     // const DELAY     =  700;
+     // const INTERVAL  =  10;
 
-    setTimeout(() => {
-        let flip = setInterval(() => {
-            this.backView.scale.x -= 0.1;
 
-            if(this.backView.scale.x < 0) {
-                this.backView.scale.x = 0;
-                this.flipped = false;
-                this.draw();
+     // thsoe scales become the max after all ... 0 still min
+     // this will shorten the animation time though. need decoupling
 
-                this.frontView.scale.x += 0.1;
-                if(this.frontView.scale.x > 0.9) {
-                    this.frontView.scale.x = 1;
-                    clearInterval(flip);
-                }
-            }
-        }, HZ);
-    }, DELAY);
+
+
+    let anis = requestAnimationFrame(() => { this.flipBack(); } );
+
+    this.backView.scale.x -= 0.1;
+
+    if(this.backView.scale.x < 0) {
+        this.backView.scale.x = 0;
+        this.flipped = false;
+        this.draw();
+
+
+
+        // when scale is set at start.. use these vars/Consts as values here.. "untill scale = 0.8"
+
+        this.frontView.scale.x += 0.1;
+        if(this.frontView.scale.x > 0.9) {
+            this.frontView.scale.x = 1;
+            cancelAnimationFrame(anis);
+        }
+    }
+
+//
+// you want the person with passion
+// hard working
+// interested in what he does and interested in improving and learning
+
+    //
+    // let Rikhart_Bekkevold = {
+    //
+    //     Frontend: 75 + '%',
+    //     Backend: 25
+    //
+    //
+    //
+    // }
+
+
+    // dark bg with color like syntax highlighting?
+
+
+    // makeResponive() => {
+    //
+    // }
+
+
+    // something that has programming in it - as a theme
+    // something that is not a theme you can find
+    // something that has all the things i claim tio have on it. responive site proves i make responive things
+    // shows deep js understanding of new things
+
+
+    // vue
+    // mobile rpject , java
+
+
+    // completely unique. not something i can find anywhere in a framwork etc... unique. somethign clearly built by me
+    // reposnivet design, fast, ux
+
+    // all the claims about me and what i like, proved in the websites
+    // a way that plebs can search and i does my best guess at what they want?
+
+
+    // use monospace font
+    // reponsive
+    // associations
+
+    //django
+
+// WOW
+// interesting
+// mezmerizing
+// attention grabbing
+// clean and neat
+// modern  - // arrow functions shows modern
+
+
+// uptodate/modern, creative, trendy, skillfull
+
+
+
+     // missing set timeout delay
+
+
+    // setTimeout(() => {
+    //     const FLIP = setInterval(() => {
+    //         this.backView.scale.x -= 0.1;
+    //
+    //         if(this.backView.scale.x < 0) {
+    //             this.backView.scale.x = 0;
+    //             this.flipped = false;
+    //             this.draw();
+    //
+    //             this.frontView.scale.x += 0.1;
+    //             if(this.frontView.scale.x > 0.9) {
+    //                 this.frontView.scale.x = 1;
+    //                 clearInterval(FLIP);
+    //             }
+    //         }
+    //     }, INTERVAL);
+    // }, DELAY);
 };
 
 
@@ -141,7 +274,7 @@ Card.prototype.removeView = function() {
 Card.prototype.removeCard = function() {
     const fade  = 0.3;
     const delay = 1000;
-    const speed = 100;
+    const speed = 100;          // is it speed?
 
     setTimeout(() => {
         let fadeOut = setInterval(() => {
@@ -166,7 +299,7 @@ Card.prototype.startMove = function(x, y) {
     var biggerX             = this.x > x ? true : false;
     var biggerY             = this.y > y ? true : false;
     var speed               = 5;
-    const HZ                = 1;
+    const INTERVAL          = 1;
 
     // if(this.x < x && sameColumn === false && biggerX === true) {
     //     console.log('y');
@@ -205,7 +338,7 @@ Card.prototype.startMove = function(x, y) {
 
         this.draw();
 
-    }, HZ);
+    }, INTERVAL);
 };
 
 
