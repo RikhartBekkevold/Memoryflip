@@ -2,11 +2,13 @@
 
 Memoryflip is a card flipping game made in javascript with the help of [pixi.js](http://www.pixijs.com/).
 
-## Play the game here: ##
-https://rikhartbekkevold.github.io/cardflip-game
+## Play
+https://rikhartbekkevold.github.io/project_sources/cardflip-game/index.html
 
-## Code structure ##
+## Features
 
-Each scene is an object ``` Startscreen ```, ``` Game ```, ```Settingscreen ``` and ``` Endscreen ```. Switching scenes is done with a call to the ``` SceneManager ``` object which
-then destroys the current scene and creates the new scene. Since destroying the current scene is achieved by calling the current scenes own destroy method, each scene needs to implement
-this method.  
+Flip the cards to reveal a pattern. Find two equal pairs to match them and remove them from the board. When
+all cards are gone the game is over. Try to get the lowest score possible.
+
+- Select number of cards 
+- Enable for cards to randomly switch position 
