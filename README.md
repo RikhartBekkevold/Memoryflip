@@ -9,7 +9,8 @@ Memoryflip is a browser based cardflipping game made in Javascript with the help
 
 ## Play
 
-[Memoryflip](https://rikhartbekkevold.github.io/project_sources/cardflip-game/index.html)
+[Memoryflip](https://rikhartbekkevold.github.io/projects/cardflip-game/index.html)
+
 
 ## Features
 
